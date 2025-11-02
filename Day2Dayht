@@ -1,0 +1,1192 @@
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Day Today Grocers - Online Grocery Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #4caf50;
+            --secondary: #ff9800;
+            --light: #f5f5f5;
+            --dark: #333;
+            --gray: #757575;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: var(--white);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-left: 10px;
+        }
+        
+        .logo i {
+            color: var(--primary);
+            font-size: 28px;
+        }
+        
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 20px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 16px;
+        }
+        
+        .search-bar button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--gray);
+            cursor: pointer;
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-actions a {
+            margin-left: 15px;
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-actions i {
+            margin-right: 5px;
+            font-size: 18px;
+        }
+        
+        .cart-count {
+            background-color: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            margin-left: 5px;
+        }
+        
+        nav {
+            background-color: var(--primary);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav li {
+            padding: 15px 20px;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--secondary);
+        }
+        
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--primary);
+            cursor: pointer;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+        
+        .hero h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn:hover {
+            background-color: #e68900;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        /* Section Styles */
+        section {
+            padding: 60px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary);
+        }
+        
+        .section-title h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            height: 200px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: cover;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .product-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+        
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .quantity-btn {
+            background: none;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        
+        .quantity-input {
+            width: 40px;
+            text-align: center;
+            border: none;
+            padding: 5px;
+        }
+        
+        /* Offers Section */
+        .offers-slider {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            padding: 10px 0;
+            scrollbar-width: none;
+        }
+        
+        .offers-slider::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .offer-card {
+            min-width: 300px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .offer-image {
+            height: 150px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .offer-info {
+            padding: 15px;
+        }
+        
+        .offer-tag {
+            background-color: var(--secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        
+        /* Delivery Slots */
+        .delivery-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .slot-card {
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .slot-card:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .slot-card.selected {
+            border-color: var(--primary);
+            background-color: rgba(46, 125, 50, 0.05);
+        }
+        
+        .slot-date {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .slot-time {
+            color: var(--gray);
+            font-size: 14px;
+        }
+        
+        /* Virtual Agent */
+        .chat-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
+        .chat-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .chat-messages {
+            height: 300px;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+        }
+        
+        .bot-message {
+            background-color: #f0f0f0;
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .user-message {
+            background-color: var(--primary-light);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            margin-right: 10px;
+        }
+        
+        /* Contact Form */
+        .contact-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--secondary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        
+        .social-links a:hover {
+            background-color: var(--secondary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            font-size: 14px;
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            margin-top: 30px;
+        }
+        
+        .admin-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .admin-tabs {
+            display: flex;
+            background-color: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .admin-tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .admin-tab.active {
+            border-bottom-color: var(--primary);
+            background-color: white;
+            font-weight: 600;
+        }
+        
+        .admin-content {
+            padding: 20px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        
+        .admin-table th, .admin-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .admin-table th {
+            background-color: #f9f9f9;
+            font-weight: 600;
+        }
+        
+        .action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+            color: var(--gray);
+            transition: color 0.3s;
+        }
+        
+        .action-btn.edit:hover {
+            color: var(--primary);
+        }
+        
+        .action-btn.delete:hover {
+            color: #f44336;
+        }
+        
+        .admin-form {
+            max-width: 500px;
+        }
+        
+        /* QR Code Section */
+        .qr-section {
+            text-align: center;
+            padding: 40px 0;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin: 40px 0;
+        }
+        
+        .qr-code {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .qr-code img {
+            max-width: 100%;
+            max-height: 100%;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-wrap: wrap;
+            }
+            
+            .search-bar {
+                order: 3;
+                max-width: 100%;
+                margin: 15px 0 0;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                display: none;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+            
+            .hero h2 {
+                font-size: 28px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            }
+        }
+        
+        /* Page Navigation */
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item-info {
+            flex: 1;
+        }
+        
+        .cart-item-name {
+            font-weight: 600;
+        }
+        
+        .cart-item-price {
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        .cart-summary {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .summary-total {
+            font-weight: 700;
+            font-size: 18px;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-shopping-basket"></i>
+                    <h1>Day Today Grocers</h1>
+                </div>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Search for products...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                
+                <div class="user-actions">
+                    <a href="#" id="admin-toggle"><i class="fas fa-user-cog"></i> Admin</a>
+                    <a href="#" onclick="showPage('cart')"><i class="fas fa-shopping-cart"></i> Cart <span class="cart-count">0</span></a>
+                    <a href="#" onclick="showPage('login')"><i class="fas fa-user"></i> Account</a>
+                </div>
+                
+                <button class="mobile-menu" id="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav>
+                <ul id="main-nav">
+                    <li><a href="#" onclick="showPage('home')">Home</a></li>
+                    <li><a href="#" onclick="showPage('groceries')">Groceries</a></li>
+                    <li><a href="#" onclick="showPage('new')">New In</a></li>
+                    <li><a href="#" onclick="showPage('delivery')">Delivery</a></li>
+                    <li><a href="#" onclick="showPage('contact')">Contact Us</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <section class="page active" id="home">
+        <div class="hero">
+            <div class="container">
+                <h2>Fresh Groceries Delivered to Your Door</h2>
+                <p>Shop from the comfort of your home and get your groceries delivered or ready for collection</p>
+                <a href="#" class="btn" onclick="showPage('groceries')">Shop Now</a>
+            </div>
+        </div>
+        
+        <div class="container">
+            <section>
+                <div class="section-title">
+                    <h2>Special Offers</h2>
+                    <p>Don't miss out on these amazing deals</p>
+                </div>
+                
+                <div class="offers-slider">
+                    <div class="offer-card">
+                        <div class="offer-image">
+                            <i class="fas fa-wine-bottle" style="font-size: 60px; color: #8B4513;"></i>
+                        </div>
+                        <div class="offer-info">
+                            <span class="offer-tag">25% OFF</span>
+                            <h3>Premium Olive Oil</h3>
+                            <p>Now only £8.99</p>
+                            <a href="#" class="btn" onclick="showPage('groceries')">Buy Now</a>
+                        </div>
+                    </div>
+                    
+                    <div class="offer-card">
+                        <div class="offer-image">
+                            <i class="fas fa-cheese" style="font-size: 60px; color: #FFD700;"></i>
+                        </div>
+                        <div class="offer-info">
+                            <span class="offer-tag">BUY 1 GET 1 FREE</span>
+                            <h3>Selection of Cheeses</h3>
+                            <p>Limited time offer</p>
+                            <a href="#" class="btn" onclick="showPage('groceries')">Buy Now</a>
+                        </div>
+                    </div>
+                    
+                    <div class="offer-card">
+                        <div class="offer-image">
+                            <i class="fas fa-apple-alt" style="font-size: 60px; color: #8B0000;"></i>
+                        </div>
+                        <div class="offer-info">
+                            <span class="offer-tag">30% OFF</span>
+                            <h3>Fresh Fruits</h3>
+                            <p>Selected varieties</p>
+                            <a href="#" class="btn" onclick="showPage('groceries')">Buy Now</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section>
+                <div class="section-title">
+                    <h2>Popular Categories</h2>
+                    <p>Browse our most popular grocery categories</p>
+                </div>
+                
+                <div class="products-grid">
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-carrot" style="font-size: 80px; color: #FF8C00;"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Fresh Vegetables</h3>
+                            <p>Locally sourced fresh vegetables</p>
+                            <a href="#" class="btn btn-primary" onclick="showPage('groceries')">Shop Now</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-apple-alt" style="font-size: 80px; color: #8B0000;"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Fresh Fruits</h3>
+                            <p>Seasonal and exotic fruits</p>
+                            <a href="#" class="btn btn-primary" onclick="showPage('groceries')">Shop Now</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-wine-bottle" style="font-size: 80px; color: #8B4513;"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Beverages</h3>
+                            <p>Soft drinks, juices and more</p>
+                            <a href="#" class="btn btn-primary" onclick="showPage('groceries')">Shop Now</a>
+                        </div>
+                    </div>
+                    
+                    <div class="product-card">
+                        <div class="product-image">
+                            <i class="fas fa-bread-slice" style="font-size: 80px; color: #D2691E;"></i>
+                        </div>
+                        <div class="product-info">
+                            <h3 class="product-name">Bakery</h3>
+                            <p>Fresh bread and pastries</p>
+                            <a href="#" class="btn btn-primary" onclick="showPage('groceries')">Shop Now</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- Groceries Page -->
+    <section class="page" id="groceries">
+        <div class="container">
+            <div class="section-title">
+                <h2>All Groceries</h2>
+                <p>Browse our complete range of products</p>
+            </div>
+            
+            <div class="products-grid" id="products-container">
+                <!-- Products will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- New In Page -->
+    <section class="page" id="new">
+        <div class="container">
+            <div class="section-title">
+                <h2>New Products</h2>
+                <p>Check out our latest additions</p>
+            </div>
+            
+            <div class="products-grid" id="new-products-container">
+                <!-- New products will be loaded here by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Delivery Page -->
+    <section class="page" id="delivery">
+        <div class="container">
+            <div class="section-title">
+                <h2>Delivery & Collection</h2>
+                <p>Choose your preferred delivery or collection slot</p>
+            </div>
+            
+            <div class="delivery-slots" id="delivery-slots">
+                <!-- Delivery slots will be loaded here by JavaScript -->
+            </div>
+            
+            <div style="text-align: center;">
+                <button class="btn" id="confirm-slot">Confirm Slot</button>
+            </div>
+            
+            <div class="section-title" style="margin-top: 60px;">
+                <h2>Virtual Assistant</h2>
+                <p>Ask any questions about our delivery service</p>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-header">
+                    <h3>Day Today Grocers Assistant</h3>
+                </div>
+                <div class="chat-messages" id="chat-messages">
+                    <div class="message bot-message">
+                        Hello! How can I help you with our delivery service today?
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chat-input" placeholder="Type your question...">
+                    <button class="btn" id="send-message">Send</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Page -->
+    <section class="page" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch with our team</p>
+            </div>
+            
+            <div class="contact-form">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" class="form-control" placeholder="Your Name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" class="form-control" placeholder="Your Email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <input type="tel" id="phone" class="form-control" placeholder="Your Phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" class="form-control" placeholder="Subject">
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" class="form-control" placeholder="Your Message"></textarea>
+                </div>
+                
+                <button class="btn" id="send-message-btn">Send Message</button>
+            </div>
+            
+            <div class="section-title" style="margin-top: 60px;">
+                <h2>Store Information</h2>
+            </div>
+            
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <p><strong>Day Today Grocers</strong></p>
+                <p>78-80, ML39BD</p>
+                <p>Phone: 07801 010106</p>
+                <p>Email: info@daytodaygrocers.com</p>
+                <p>Opening Hours: 8:00 to 22:00</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Page -->
+    <section class="page" id="cart">
+        <div class="container">
+            <div class="section-title">
+                <h2>Your Shopping Cart</h2>
+                <p>Review your items before checkout</p>
+            </div>
+            
+            <div id="cart-items">
+                <!-- Cart items will be loaded here by JavaScript -->
+            </div>
+            
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">£0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery:</span>
+                    <span id="cart-delivery">£2.99</span>
+                </div>
+                <div class="summary-row summary-total">
+                    <span>Total:</span>
+                    <span id="cart-total">£2.99</span>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px;">
+                <button class="btn" id="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Page -->
+    <section class="page" id="login">
+        <div class="container">
+            <div class="section-title">
+                <h2>Account Login</h2>
+                <p>Sign in to your account</p>
+            </div>
+            
+            <div class="contact-form">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" class="form-control" placeholder="Your Email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" class="form-control" placeholder="Your Password">
+                </div>
+                
+                <button class="btn" id="login-btn">Login</button>
+                
+                <p style="text-align: center; margin-top: 20px;">
+                    Don't have an account? <a href="#" id="show-register">Register here</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Register Page -->
+    <section class="page" id="register">
+        <div class="container">
+            <div class="section-title">
+                <h2>Create Account</h2>
+                <p>Register for a new account</p>
+            </div>
+            
+            <div class="contact-form">
+                <div class="form-group">
+                    <label for="reg-name">Full Name</label>
+                    <input type="text" id="reg-name" class="form-control" placeholder="Your Name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-email">Email Address</label>
+                    <input type="email" id="reg-email" class="form-control" placeholder="Your Email">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-phone">Phone Number</label>
+                    <input type="tel" id="reg-phone" class="form-control" placeholder="Your Phone">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" class="form-control" placeholder="Your Password">
+                </div>
+                
+                <div class="form-group">
+                    <label for="reg-confirm">Confirm Password</label>
+                    <input type="password" id="reg-confirm" class="form-control" placeholder="Confirm Password">
+                </div>
+                
+                <button class="btn" id="register-btn">Register</button>
+                
+                <p style="text-align: center; margin-top: 20px;">
+                    Already have an account? <a href="#" id="show-login">Login here</a>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <section class="page" id="admin">
+        <div class="container">
+            <div class="section-title">
+                <h2>Admin Panel</h2>
+                <p>Manage your products, offers and delivery slots</p>
+            </div>
+            
+            <div class="admin-panel">
+                <div class="admin-header">
+                    <h3>Day Today Grocers Admin</h3>
+                    <button class="btn" id="logout-admin">Logout</button>
+                </div>
+                
+                <div class="admin-tabs">
+                    <div class="admin-tab active" data-tab="products">Products</div>
+                    <div class="admin-tab" data-tab="offers">Offers</div>
+                    <div class="admin-tab" data-tab="delivery-slots">Delivery Slots</div>
+                    <div class="admin-tab" data-tab="orders">Orders</div>
+                </div>
+                
+                <div class="admin-content">
+                    <!-- Products Tab -->
+                    <div class="tab-content active" id="products-tab">
+                        <button class="btn" id="add-product-btn">Add New Product</button>
+                        
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Category</th>
+                                    <th>Price</th>
+                                    <th>Stock</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-products-table">
+                                <!-- Products will be loaded here by JavaScript -->
+                            </tbody>
+                        </table>
+                        
+                        <div class="admin-form" id="product-form" style="display: none;">
+                            <h3>Add/Edit Product</h3>
+                            <div class="form-group">
+                                <label for="product-name">Product Name</label>
+                                <input type="text" id="product-name" class="form-control">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-category">Category</label>
+                                <select id="product-category" class="form-control">
+                                    <option value="fruits">Fruits</option>
+                                    <option value="vegetables">Vegetables</option>
+                                    <option value="dairy">Dairy</option>
+                                    <option value="meat">Meat</option>
+                                    <option value="bakery">Bakery</option>
+                                    <option value="beverages">Beverages</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-price">Price (£)</label>
+                                <input type="number" id="product-price" class="form-control" step="0.01">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="product-stock">Stock</label>
+                                <input type="number" id="product-stock" class="form-control">
+                            </div>
+…
